@@ -1,11 +1,14 @@
 package com.snowleopard.blog.api.user;
 
 import com.snowleopard.blog.api.VO.BlogsVO;
+import com.snowleopard.blog.api.VO.FeedbackVO;
 import com.snowleopard.blog.api.VO.ListVO;
 import com.snowleopard.blog.common.ServiceResultEnum;
 import com.snowleopard.blog.entity.Blogs;
+import com.snowleopard.blog.entity.Feedback;
 import com.snowleopard.blog.param.BlogsInsertParam;
 import com.snowleopard.blog.service.BlogsService;
+import com.snowleopard.blog.service.FeedbackService;
 import com.snowleopard.blog.util.Result;
 import com.snowleopard.blog.util.ResultGenerator;
 import io.swagger.annotations.Api;
@@ -32,6 +35,9 @@ import java.util.List;
 public class UserBlogsAPI {
     @Autowired
     BlogsService blogsService;
+
+    @Autowired
+    FeedbackService feedbackService;
 
     @CrossOrigin
     @GetMapping("/blogs/blog")
@@ -63,4 +69,20 @@ public class UserBlogsAPI {
             return ResultGenerator.genFailResult(ServiceResultEnum.ERROR.getResult());
         }
     }
+
+    @CrossOrigin
+    @PostMapping("/blogs/feedback")
+    @ApiOperation(value = "提交反馈接口")
+    public Result insertFeedBack(@RequestHeader("application/json") @RequestBody @Validated FeedbackVO feedbackVO) {
+        Feedback feedback = new Feedback(
+               feedbackVO.getFeedback(),1,new Timestamp(System.currentTimeMillis()));
+
+        int result= feedbackService.insertFeedback(feedback);
+        if (result>0){
+            return ResultGenerator.genSuccessResult(ServiceResultEnum.SUCCESS.getResult());
+        }else {
+            return ResultGenerator.genFailResult(ServiceResultEnum.ERROR.getResult());
+        }
+    }
+
 }

@@ -46,24 +46,24 @@ isPost,draft,create_time
             <if test="blogsTitle != null">
                 blogs_title = #{blogsTitle},
             </if>
-        </set>
-        <set>
+
+
             <if test="blogsDescription != null">
                 blogs_description = #{blogsDescription},
             </if>
-        </set>
-        <set>
+
+
             <if test="isDeleted != null">
                 isDeleted = #{isDeleted},
             </if>
-        </set>
-        <set>
+
+
             <if test="isPost != null">
                 isPost = #{isPost},
             </if>
-        </set>
 
-        <set>
+
+
             <if test="draft != null">
                 draft = #{draft},
             </if>

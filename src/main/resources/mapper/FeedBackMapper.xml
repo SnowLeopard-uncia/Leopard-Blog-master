@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snowleopard.blog.dao.FeedBackMapper">
+    <resultMap id="FeedbackMap" type="com.snowleopard.blog.entity.Feedback">
+        <id column="feedback_id" property="feedbackId"/>
+        <result column="feedback_content" property="feedbackContent"/>
+        <result column="feedback_show" property="feedbackShow"/>
+        <result column="feedback_time" property="feedbackTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        feedback_id,feedback_content,feedback_show,feedback_time
+    </sql>
+
+    <select id="selectAllFeedback"  resultMap="FeedbackMap">
+        select
+        <include refid="Base_Column_List" />
+        from feedback
+    </select>
+
+    <insert id="insertFeedBack" parameterType="com.snowleopard.blog.entity.Feedback">
+        insert  into feedback (feedback_content,feedback_show,feedback_time)
+        values (#{feedbackContent},#{feedbackShow},#{feedbackTime})
+    </insert>
+
+</mapper>

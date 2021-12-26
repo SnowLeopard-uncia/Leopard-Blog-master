@@ -3,6 +3,7 @@ package com.snowleopard.blog.service;
 import com.snowleopard.blog.api.VO.BlogsVO;
 import com.snowleopard.blog.entity.Blogs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,5 +20,9 @@ public interface BlogsService {
 
     List<BlogsVO> selectShowBlogs();
 
+    List<BlogsVO> selectDraftBlogs();
+
     Blogs selectBlogsById(Long blogsId);
+
+    int updateDeleteBlogs(ArrayList<Integer> ids);
 }
