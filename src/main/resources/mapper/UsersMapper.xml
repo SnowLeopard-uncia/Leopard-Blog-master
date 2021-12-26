@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snowleopard.blog.dao.UsersMapper">
+    <resultMap id="UsersMap" type="com.snowleopard.blog.entity.Users">
+        <id column="users_id" property="usersId"/>
+        <result column="users_name" property="usersName"/>
+        <result column="users_password" property="usersPassword"/>
+        <result column="users_salt" property="usersSalt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        users_id,users_name,users_password,users_salt
+    </sql>
+
+
+    <select id="selectByUserName"  resultMap="UsersMap">
+        select
+        <include refid="Base_Column_List" />
+        from users where users_name=#{usersName}
+    </select>
+
+    <select id="selectByUserId"  resultMap="UsersMap">
+        select
+        <include refid="Base_Column_List" />
+        from users where users_id=#{usersId}
+    </select>
+
+
+    <select id="login" resultMap="UsersMap">
+        select
+        <include refid="Base_Column_List" />
+        from users
+        where users_name = #{usersName} AND users_password=#{usersPassword}
+    </select>
+
+    <update id="updateUserByUserNameSelective" parameterType="com.snowleopard.blog.entity.Users">
+        update users
+        <set>
+            <if test="usersPassword != null">
+                users_password = #{usersPassword},
+            </if>
+        </set>
+        where users_name = #{usersName}
+    </update>
+
+</mapper>

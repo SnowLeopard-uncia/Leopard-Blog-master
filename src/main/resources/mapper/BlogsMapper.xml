@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snowleopard.blog.dao.BlogsMapper">
+    <resultMap id="BlogsMap" type="com.snowleopard.blog.entity.Blogs">
+        <id column="blogs_id" property="blogsId"/>
+        <result column="blogs_title" property="blogsTitle"/>
+        <result column="blogs_description" property="blogsDescription"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="isPost" property="isPost"/>
+        <result column="draft" property="draft"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        blogs_id,blogs_title,blogs_description,isDeleted,
+isPost,draft,create_time
+    </sql>
+
+        <select id="selectByBlogId"  resultMap="BlogsMap">
+            select
+            <include refid="Base_Column_List" />
+            from blogs where blogs_id=#{blogsId}
+        </select>
+
+        <select id="selectAllBlogs"  resultMap="BlogsMap">
+            select
+            <include refid="Base_Column_List" />
+            from blogs
+        </select>
+
+    <select id="selectShowBlogs"  resultMap="BlogsMap">
+        select
+        <include refid="Base_Column_List" />
+        from blogs where isDeleted=0 AND isPost=1 AND draft=0
+    </select>
+
+    <insert id="insertBlog" parameterType="com.snowleopard.blog.entity.Blogs">
+        insert  into blogs (blogs_title,blogs_description,isDeleted,isPost,draft,create_time)
+        values (#{blogsTitle},#{blogsDescription},#{isDeleted},#{isPost},#{draft},#{createTime})
+    </insert>
+
+    <update id="updateUserByBlogsIdSelective" parameterType="com.snowleopard.blog.entity.Blogs">
+        update blogs
+        <set>
+            <if test="blogsTitle != null">
+                blogs_title = #{blogsTitle},
+            </if>
+        </set>
+        <set>
+            <if test="blogsDescription != null">
+                blogs_description = #{blogsDescription},
+            </if>
+        </set>
+        <set>
+            <if test="isDeleted != null">
+                isDeleted = #{isDeleted},
+            </if>
+        </set>
+        <set>
+            <if test="isPost != null">
+                isPost = #{isPost},
+            </if>
+        </set>
+
+        <set>
+            <if test="draft != null">
+                draft = #{draft},
+            </if>
+        </set>
+        where blogs_id = #{blogsId}
+    </update>
+    <!--    <select id="selectByUserName"  resultMap="UsersMap">-->
+    <!--        select-->
+    <!--        <include refid="Base_Column_List" />-->
+    <!--        from users where users_name=#{usersName}-->
+    <!--    </select>-->
+
+    <!--    <select id="selectByUserId"  resultMap="UsersMap">-->
+    <!--        select-->
+    <!--        <include refid="Base_Column_List" />-->
+    <!--        from users where users_id=#{usersId}-->
+    <!--    </select>-->
+</mapper>
